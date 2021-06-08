@@ -1,0 +1,82 @@
+/* form {
+  display: inline-block;
+  background-color: aqua;
+  padding: 10px;
+  height: 300;
+  width: 300;
+  border-style: solid;
+  border-color: black;
+  border-width: 3px;
+  border-radius: 10px;
+  vertical-align: top;
+} */
+
+.animalbox {
+  vertical-align: top;
+  display: inline-block;
+
+  padding: 10px;
+  width: 400px;
+  height: 600px;
+  border-style: solid;
+  border-color: black;
+  border-width: 3px;
+  border-radius: 10px;
+  margin: 10px;
+
+  /* color: white;
+  text-shadow: 0.1em 0 black, 0 0.1em black, -0.1em 0 black, 0 -0.1em black; */
+
+  text-shadow: 0.1em 0 white, 0 0.1em white, -0.1em 0 white, 0 -0.1em white;
+}
+
+.modelbox {
+  vertical-align: top;
+  display: block;
+
+  padding: 10px;
+  width: 800px;
+  height: 200px;
+  border-style: solid;
+  border-color: black;
+  border-width: 3px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.savannah {
+  background-image: url("/static/img/savannah.jpg");
+}
+
+.animal_description {
+  height: 160px;
+  margin-bottom: 20px;
+}
+
+.face {
+  border-style: solid;
+  border-color: black;
+  border-width: 2px;
+  border-radius: 5px;
+  width: 150px;
+  height: 150px;
+}
+
+.wideshot {
+  border-style: solid;
+  border-color: black;
+  border-width: 2px;
+  border-radius: 5px;
+  width: 380px;
+  height: 190px;
+}
+
+.thumb {
+  border-style: solid;
+  border-color: black;
+  border-width: 2px;
+  border-radius: 5px;
+  width: 75px;
+  height: 75px;
+  margin: 5px;
+}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <h1>Add Animal Class</h1>
+    <form method="POST" enctype="multipart/form-data" action="/add_class_exe">
+      {% csrf_token %}
+      <p>
+        <label for="id_name">Animal Class:</label>
+        <input type="text" name="name" required id="id_name" />
+      </p>
+      <p>
+        <label for="id_desc">Description:</label>
+        <input type="textarea" name="desc" required id="id_desc" />
+      </p>
+      <p>
+        <label for="id_img">Img:</label>
+        <input type="file" name="img" accept="image/*" required id="id_img" />
+      </p>
+      <input type="submit" value="Submit" />
+    </form>
+  </body>
+</html>

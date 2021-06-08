@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Show Animal</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <div class="animalbox" style="background-image: url({{biome.img.url}})">
+      <h3>{{animal.name}}</h3>
+      <img class="face" src="{{animal.face_img.url}}" />
+
+      <div class="animal_description">
+        <h4>Quick Description</h4>
+        <p>
+          <b>{{animal.desc}}</b>
+        </p>
+      </div>
+      <img src="{{animal.wide_img.url}}" class="wideshot" />
+    </div>
+
+    <div class="animalbox">
+      <h1>Comments</h1>
+      {% for comment in comments %}
+      <p>{{comment.text}} <i>-{{comment.commentor.first_name}}</i></p>
+      {% endfor %} {% if logged_in == True %}
+      <form action="/comment" method="POST">
+        {% csrf_token %}
+        <p>
+          <label for="id_text">Comments:</label>
+          <input type="textarea" name="text" required id="id_text" />
+        </p>
+        <input type="hidden" id="model_type" name="model_type" value="animal" />
+        <input type="hidden" id="target" name="target" value="{{animal.id}}" />
+        <input type="submit" value="Submit" />
+      </form>
+      {% else %}
+      <p>Login to make comment</p>
+      {% endif %}
+    </div>
+
+    <div class="animalbox">
+      <h1>Edits</h1>
+      {% for edit in edits %}
+      <p>{{edit.text}} <i>-{{edit.editor.first_name}}</i></p>
+      {% endfor %}{% if logged_in == True %}
+      <a href="animals/{{animal.id}}/edit">Make Edit</a>
+      {% else %}
+      <p>Login to edit</p>
+      {% endif %}
+    </div>
+
+    <a href="/">Back</a>
+  </body>
+</html>
