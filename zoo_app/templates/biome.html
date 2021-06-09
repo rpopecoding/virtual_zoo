@@ -49,7 +49,7 @@
         {{edit.text}} <i>-{{edit.editor.first_name}} @ {{edit.created_at}}</i>
       </p>
       {% endfor %}{% if logged_in == True %}
-      <a href="animals/{{animal.id}}/edit">Make Edit</a>
+      <a href="/biomes/{{biome.id}}/edit">Make Edit</a>
       {% else %}
       <p>Login to edit</p>
       {% endif %}

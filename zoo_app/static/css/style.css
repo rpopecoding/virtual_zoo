@@ -11,6 +11,11 @@
   vertical-align: top;
 } */
 
+textarea {
+  width: 100%;
+  height: 200px;
+}
+
 .animalbox {
   vertical-align: top;
   display: inline-block;

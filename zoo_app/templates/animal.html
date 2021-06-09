@@ -47,7 +47,7 @@
       {% for edit in edits %}
       <p>{{edit.text}} <i>-{{edit.editor.first_name}}</i></p>
       {% endfor %}{% if logged_in == True %}
-      <a href="animals/{{animal.id}}/edit">Make Edit</a>
+      <a href="/animals/{{animal.id}}/edit">Make Edit</a>
       {% else %}
       <p>Login to edit</p>
       {% endif %}
