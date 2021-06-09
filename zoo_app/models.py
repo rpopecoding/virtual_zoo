@@ -71,14 +71,19 @@ class UserManager(models.Manager):
     def basic_validator(self, postData):
         errors = {}
         users = self.filter(email=postData['email'])
+        handle = self.filter(handle=postData['handle'])
         if users:
             errors["email"] = "Email already in use"
+        if handle:
+            errors["handle"] = "Handle already in use"
         if postData['pwd'] != postData['confirm']:
             errors["password"] = "Passwords do not match"
         if len(postData['first_name']) < 2:
             errors["first_name"] = "First name must be at least 2 characters"
         if len(postData['last_name']) < 2:
             errors["last_name"] = "Last name must be at least 2 characters"
+        if len(postData['handle']) < 2:
+            errors["handle"] = "Handle must be at least 2 characters"
         
 
         if not EMAIL_REGEX.match(postData['email']): 
@@ -92,9 +97,39 @@ class UserManager(models.Manager):
         user = users[0]
         return bcrypt.checkpw(password.encode(), user.pwdhash.encode())
 
+    def update_validator(self, first_name, last_name, old_handle, new_handle, old_email, new_email):
+        errors = {}
+        if old_handle != new_handle:
+            handle_check = self.filter(handle= new_handle)
+        else:
+            handle_check = {}
+        if old_email != new_email:
+            email_check = self.filter(email= new_email)
+        else:
+            email_check = {}
+        
+        
+        if email_check:
+            errors["email"] = "New email already in use"
+        if handle_check:
+            errors["handle"] = "New handle already in use"
+        if len(first_name) < 2:
+            errors["first_name"] = "First name must be at least 2 characters"
+        if len(last_name) < 2:
+            errors["last_name"] = "Last name must be at least 2 characters"
+        if len(new_handle) < 2:
+            errors["handle"] = "Handle must be at least 2 characters"
+        
+
+        if not EMAIL_REGEX.match(new_email): 
+            errors['email'] = "Invalid email address!"
+        
+        return errors
+
 class User(models.Model):
     first_name = models.CharField(max_length=40)
     last_name = models.CharField(max_length=40)
+    handle = models.CharField(max_length=40)
     email = models.CharField(max_length=255)
     pwdhash = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)

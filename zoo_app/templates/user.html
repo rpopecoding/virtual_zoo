@@ -6,10 +6,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-    <title>{{user.first_name}} {{user.last_name}}'s Profile</title>
+    <title>{{render_user.handle}}'s Profile</title>
   </head>
   <body>
-    <h1>{{user.first_name}} {{user.last_name}}'s Profile</h1>
-    <a href="/index">Back</a>
+    
+    {% include 'partials/nav.html'%}
+    
+    {% if match == True %}
+    <h1>Your Name: {{render_user.first_name}} {{render_user.last_name}}</h1>
+    <h1>Your Handle: {{render_user.handle}}</h1>
+    <h1>Your Email: {{render_user.email}}</h1>
+    <h1><a href="/edit_user">Edit Profile</a></h1>
+    {% else %}
+    <h1>{{render_user.handle}}'s Profile</h1>
+    {% endif %}
+    <h3>Comments</h3>
+    {% for comment in render_user_comments %}
+    
+    {% if comment.acomment %}
+    <p><a href="/animals/{{comment.acomment.id}}">{{comment.acomment.name}}</a>: "{{comment.text}}" @ {{comment.created_at}}</p>
+    {% endif %}
+    {% if comment.fcomment %}
+    <p><a href="/families/{{comment.fcomment.id}}">{{comment.fcomment.name}}</a>: "{{comment.text}}" @ {{comment.created_at}}</p>
+    {% endif %}
+    {% if comment.ccomment %}
+    <p><a href="/aniclasses/{{comment.ccomment.id}}">{{comment.ccomment.name}}</a>: "{{comment.text}}" @ {{comment.created_at}}</p>
+    {% endif %}
+    {% if comment.bcomment %}
+    <p><a href="/biomes/{{comment.bcomment.id}}">{{comment.bcomment.name}}</a>: "{{comment.text}}" @ {{comment.created_at}}</p>
+    {% endif %}
+    {% endfor %}
+
+    <h3>Edits</h3>
+    {% for edit in render_user_edits %}
+    
+    {% if edit.aedit %}
+    <p><a href="/animals/{{edit.aedit.id}}">{{edit.aedit.name}}</a>: "{{edit.text}}" @ {{edit.created_at}}</p>
+    {% endif %}
+    {% if edit.fedit %}
+    <p><a href="/families/{{edit.fedit.id}}">{{edit.fedit.name}}</a>: "{{edit.text}}" @ {{edit.created_at}}</p>
+    {% endif %}
+    {% if edit.cedit %}
+    <p><a href="/aniclasses/{{edit.cedit.id}}">{{edit.cedit.name}}</a>: "{{edit.text}}" @ {{edit.created_at}}</p>
+    {% endif %}
+    {% if edit.bedit %}
+    <p><a href="/biomes/{{edit.bedit.id}}">{{edit.bedit.name}}</a>: "{{edit.text}}" @ {{edit.created_at}}</p>
+    {% endif %}
+    {% endfor %}
+
+
   </body>
 </html>

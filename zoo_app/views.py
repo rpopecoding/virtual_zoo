@@ -3,8 +3,7 @@ from .models import *
 from .forms import *
 from django.contrib import messages
 
-
-def index(request):
+def logcheck(request):
     if 'active_user' in request.session:
         user = User.objects.get(id=request.session['active_user'])
         context ={
@@ -15,41 +14,31 @@ def index(request):
         context = {
             "logged_in" : False
         }
-    all_animals = Animal.objects.all()
-    
-    context['all_animals'] = all_animals
+    return context
+
+def index(request):
+    context = logcheck(request)
+    context['all_animals'] = Animal.objects.all()
     context['all_families'] = Family.objects.all()
     context['all_classes'] = Aniclass.objects.all()
     context['all_biomes'] = Biome.objects.all()
-    print(context)
-
-       
+      
     return render(request, "index.html", context)
 
 def index_redir(request):
     return redirect("/")
 
 
-def logregister(request):
-    if 'active_user' in request.session:
-        user = User.objects.get(id=request.session['active_user'])
-        context ={
-            "logged_in" : True,
-            "user": user
-        }
-    else:
-        context = {
-            "logged_in" : False
-        }
-
-       
-    return render(request, "logregister.html", context)
-
 def register(request):
+    context = logcheck(request)
+    return render(request, "register.html", context)
+
+def register_exe(request):
     if request.method == "POST":
         print(request.POST)
         first_name = request.POST['first_name']
         last_name = request.POST['last_name']
+        handle = request.POST['handle']
         email = request.POST['email']
         pwd = request.POST['pwd']   
         
@@ -57,10 +46,10 @@ def register(request):
         if len(errors) > 0:
             for key, value in errors.items():
                 messages.error(request, value)
-            return redirect('/')
+            return redirect('/register')
 
         posthash = bcrypt.hashpw(pwd.encode(), bcrypt.gensalt()).decode()
-        User.objects.create(first_name=first_name, last_name=last_name, email=email, pwdhash = posthash)
+        User.objects.create(first_name=first_name, last_name=last_name, handle=handle, email=email, pwdhash = posthash)
         user = User.objects.last()
         request.session['active_user'] = user.id
     return redirect("/")
@@ -70,6 +59,10 @@ def logout(request):
     return redirect('/')
 
 def login(request):
+    context= logcheck(request)
+    return render(request, "login.html", context)
+
+def login_exe(request):
     if request.method == "POST":
         print(request.POST)
         email = request.POST['email']
@@ -82,9 +75,13 @@ def login(request):
             return redirect("/")
         else:
             messages.error(request, "Email and Password do not match")
-                  
-        
-    return redirect("/")
+            return redirect("/login")
+                          
+    return redirect("/login")
+
+def contribute(request):
+    context = logcheck(request)
+    return render(request, "contribute.html", context)
 
 def animal(request, render_id):
     animal = Animal.objects.get(id=render_id)
@@ -239,11 +236,53 @@ def add_animal_exe(request):
     return redirect(f"/animals/{obj.id}")
 
 def user_profile(request, render_id):
-    user = User.objects.get(id=render_id)
-    context = {
-        "user": user
-    }
+    context= logcheck(request)
+    render_user = User.objects.get(id=render_id)
+    if 'user' in context:
+        if context['user'] == render_user:
+            context['match'] = True
+        else:
+            context['match'] = False
+    else:
+        context['match'] = False
+    context['render_user'] = render_user
+    context['render_user_comments'] = render_user.comments.all()
+    context['render_user_edits'] = render_user.edits.all()
     return render(request, "user.html", context)
+
+def edit_user(request):
+    context= logcheck(request)
+    if 'user' in context:
+        return render(request, "edit_user.html", context)
+    else:
+        return redirect("/")
+
+def edit_user_exe(request):
+    if request.method == "POST":
+        print(request.POST)
+        user = User.objects.get(id=request.session['active_user'])
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        new_handle = request.POST['handle']
+        old_handle = user.handle
+        new_email = request.POST['email']
+        old_email = user.email
+         
+        
+        errors = User.objects.update_validator(first_name, last_name, old_handle, new_handle, old_email, new_email)
+        if len(errors) > 0:
+            for key, value in errors.items():
+                messages.error(request, value)
+            return redirect('/edit_user')
+
+        
+        user.first_name = first_name
+        user.last_name = last_name
+        user.handle = new_handle
+        user.email = new_email
+        user.save()
+        return redirect(f"users/{user.id}")
+    return redirect("/")
 
 def comment(request):
     if request.method == "POST":
