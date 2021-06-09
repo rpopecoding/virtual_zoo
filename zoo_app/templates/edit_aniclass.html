@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Show Animal</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <div class="animalbox">
+      <h3>{{aniclass.name}}</h3>
+      <img class="face" src="{{aniclass.img.url}}" />
+
+      <div class="animal_description">
+        <p>
+          <b>{{aniclass.desc}}</b>
+        </p>
+      </div>
+    </div>
+
+    <div class="animalbox">
+      <h1>Edit Text</h1>
+      <form action="/edit_aniclass_exe" method="POST">
+        {% csrf_token %}
+        <p>
+          <label for="id_name">Animal Class:</label>
+          <input
+            type="text"
+            name="name"
+            required
+            id="id_name"
+            value="{{aniclass.name}}"
+          />
+        </p>
+        <p>Description:</p>
+        <textarea name="desc">{{aniclass.desc}}</textarea>
+        <input
+          type="hidden"
+          id="aniclass_id"
+          name="aniclass_id"
+          value="{{aniclass.id}}"
+        />
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+
+    <div class="animalbox">
+      <h1>Edit Image</h1>
+      <form
+        action="/edit_aniclass_exe"
+        enctype="multipart/form-data"
+        method="POST"
+      >
+        {% csrf_token %}
+        <p>
+          <input type="file" name="img" accept="image/*" required id="id_img" />
+          <input type="submit" value="Submit" />
+        </p>
+        <input
+          type="hidden"
+          id="aniclass_id"
+          name="aniclass_id"
+          value="{{aniclass.id}}"
+        />
+      </form>
+    </div>
+
+    <a href="/">Back</a>
+  </body>
+</html>

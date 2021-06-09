@@ -26,4 +26,13 @@ urlpatterns = [
     path('add_animal_exe', views.add_animal_exe),
 
     path('comment', views.comment),
+
+    path('families/<int:render_id>/edit', views.edit_family),
+    path('edit_family_exe', views.edit_family_exe),
+    path('aniclasses/<int:render_id>/edit', views.edit_aniclass),
+    path('edit_aniclass_exe', views.edit_aniclass_exe),
+    path('biomes/<int:render_id>/edit', views.edit_biome),
+    path('edit_biome_exe', views.edit_biome_exe),
+    path('animals/<int:render_id>/edit', views.edit_animal),
+    path('edit_animal_exe', views.edit_animal_exe),
 ]

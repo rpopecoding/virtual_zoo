@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Show Animal</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <div class="animalbox" style="background-image: url({{biome.img.url}})">
+      <h3>{{animal.name}}</h3>
+      <img class="face" src="{{animal.face_img.url}}" />
+
+      <div class="animal_description">
+        <h4>Quick Description</h4>
+        <p>
+          <b>{{animal.desc}}</b>
+        </p>
+      </div>
+      <img src="{{animal.wide_img.url}}" class="wideshot" />
+    </div>
+
+    <div class="animalbox">
+      <h1>Edit Text</h1>
+      <form action="/edit_animal_exe" method="POST">
+        {% csrf_token %}
+        <p>
+          <label for="id_name">Animal Name:</label>
+          <input
+            type="text"
+            name="name"
+            required
+            id="id_name"
+            value="{{animal.name}}"
+          />
+        </p>
+        <p>Description:</p>
+        <textarea name="desc">{{animal.desc}}</textarea>
+        <input
+          type="hidden"
+          id="animal_id"
+          name="animal_id"
+          value="{{animal.id}}"
+        />
+        <input type="submit" value="Submit" />
+      </form>
+      <form action="/edit_animal_exe" method="POST">
+        {% csrf_token %}
+        <p>
+          <label for="biome_id">Add Habitat:</label>
+          <select name="biome" id="biome_id">
+            {% for biome in potential_biomes %}
+            <option value="{{biome.id}}">{{biome.name}}</option>
+            {% endfor %}
+          </select>
+          <input
+            type="hidden"
+            id="animal_id"
+            name="animal_id"
+            value="{{animal.id}}"
+          />
+        </p>
+        <input type="submit" value="Submit" />
+      </form>
+      <form action="/edit_animal_exe" method="POST">
+        {% csrf_token %}
+        <p>
+          <label for="kill_biome_id">Remove Habitat:</label>
+          <select name="kill_biome" id="kill_biome_id">
+            {% for biome in existing_biomes %}
+            <option value="{{biome.id}}">{{biome.name}}</option>
+            {% endfor %}
+          </select>
+          <input
+            type="hidden"
+            id="animal_id"
+            name="animal_id"
+            value="{{animal.id}}"
+          />
+        </p>
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+
+    <div class="animalbox">
+      <h1>Edit Image</h1>
+      <form
+        action="/edit_biome_exe"
+        enctype="multipart/form-data"
+        method="POST"
+      >
+        {% csrf_token %}
+        <p>
+          <input type="file" name="img" accept="image/*" required id="id_img" />
+          <input type="submit" value="Submit" />
+        </p>
+        <input
+          type="hidden"
+          id="biome_id"
+          name="biome_id"
+          value="{{biome.id}}"
+        />
+      </form>
+    </div>
+
+    <a href="/">Back</a>
+  </body>
+</html>
