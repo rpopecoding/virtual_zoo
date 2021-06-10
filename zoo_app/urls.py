@@ -6,9 +6,14 @@ urlpatterns = [
     path('index', views.index_redir),
 
     path('register', views.register),
+    path('register_exe', views.register_exe),
     path('logout', views.logout),
     path('login', views.login),
-    path('logregister', views.logregister),
+    path('login_exe', views.login_exe),
+    path('edit_user', views.edit_user),
+    path('edit_user_exe', views.edit_user_exe),
+    
+    path('contribute', views.contribute),
 
     path('animals/<int:render_id>', views.animal),
     path('families/<int:render_id>', views.family),

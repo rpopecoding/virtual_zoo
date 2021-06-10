@@ -9,20 +9,7 @@
     <title>Document</title>
   </head>
   <body>
-    {% if logged_in == True %}
-    <h1>
-      Welcome {{user.first_name}} {{user.last_name}}
-      <a href="/users/{{user.id}}">profile</a>
-    </h1>
-    <a href="/logout"><p>logout</p></a>
-    <a href="/add_biome">Add a biome</a><br />
-    <a href="/add_class">Add an animal class</a><br />
-    <a href="/add_family">Add an animal family</a><br />
-    <a href="/add_animal">Add an animal</a><br />
-    {% else %}
-    <h1>Welcome Visitor</h1>
-    <a href="logregister">Login</a>
-    {% endif %}
+    {% include 'partials/nav.html'%}
 
     <div class="modelbox">
       {% for animal in all_animals %}

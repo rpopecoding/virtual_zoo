@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Contribution</title>
+  </head>
+  <body>
+    {% include 'partials/nav.html'%} {% if logged_in == True %}
+    <h3>
+      <a href="/add_animal">Add Animal</a>
+      <a href="/add_family">Add Animal Family</a>
+      <a href="/add_class">Add Animal Class</a>
+      <a href="/add_biome">Add Habitat</a>
+    </h3>
+    {% else %}
+    <h3>You must be logged in to contribute.</h3>
+    {% endif %}
+  </body>
+</html>

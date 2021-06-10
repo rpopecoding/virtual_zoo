@@ -1,0 +1,19 @@
+<div>
+  {% if logged_in == True %}
+  <h3>
+    Welcome <i>{{user.handle}}</i>
+    <a href="/users/{{user.id}}"> Profile</a>
+    <a href="/logout">Logout</a>
+    <a href="/">Home</a>
+    <a href="/contribute">Contribute</a>
+  </h3>
+
+  {% else %}
+  <h3>
+    Welcome Visitor
+    <a href="/login"> Login</a>
+    <a href="/register"> Register</a>
+    <a href="/">Home</a>
+  </h3>
+  {% endif %}
+</div>
