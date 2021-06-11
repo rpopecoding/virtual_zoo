@@ -6,26 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Show Animal</title>
     {% load static %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
   </head>
   <body>
-    <div class="animalbox">
-      <h3>{{biome.name}}</h3>
-      <img class="face" src="{{biome.img.url}}" />
-
-      <div class="animal_description">
-        <p>
-          <b>{{biome.desc}}</b>
-        </p>
+  <div class="container">
+    {% include 'partials/nav.html'%}
+    <div class="row p-1">
+      <div class="col-12 col-lg-5 border border-dark rounded p-2" style="background-image: url({{biome.img.url}})">
+        
+        <div class="row p-3">
+        <div class="col-12 skyblue border border-dark rounded p-2">
+          <h3>{{biome.name}}</h3>
+          <p><b>{{biome.desc}}</b></p>
+        </div>
+        </div>
       </div>
-    </div>
-
-    <div class="animalbox">
-      <h1>Edit Text</h1>
-      <form action="/edit_biome_exe" method="POST">
+      <div class="col-12 col-lg-5 border border-dark rounded skyblue p-2">
+        <h1>Edit Text</h1>
+        <form action="/edit_biome_exe" method="POST">
         {% csrf_token %}
         <p>
-          <label for="id_name">Habitate Name:</label>
+          <label for="id_name">Habitat Name:</label>
           <input
             type="text"
             name="name"
@@ -43,11 +48,8 @@
           value="{{biome.id}}"
         />
         <input type="submit" value="Submit" />
-      </form>
-    </div>
-
-    <div class="animalbox">
-      <h1>Edit Image</h1>
+        </form>
+        <h1>Edit Image</h1>
       <form
         action="/edit_biome_exe"
         enctype="multipart/form-data"
@@ -65,8 +67,13 @@
           value="{{biome.id}}"
         />
       </form>
+      </div>
     </div>
 
-    <a href="/">Back</a>
+
+
+ 
+
+  </div>
   </body>
 </html>

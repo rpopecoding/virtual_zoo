@@ -1,20 +1,10 @@
-.navbar {
-  /* overflow: hidden; */
-  background-color: rgb(189, 187, 187);
-  position: fixed; /* Set the navbar to fixed position */
-  top: 0; /* Position the navbar at the top of the page */
-  width: 100%; /* Full width */
+body{
+  background-color: rgb(127, 197, 255);
 }
 
-/* Links inside the navbar */
-/* .navbar a {
-  float: left;
-  display: block;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-} */
+li{
+  display: inline-block;
+}
 
 textarea {
   width: 100%;
@@ -37,21 +27,58 @@ textarea {
   /* color: white;
   text-shadow: 0.1em 0 black, 0 0.1em black, -0.1em 0 black, 0 -0.1em black; */
 
-  text-shadow: 0.1em 0 white, 0 0.1em white, -0.1em 0 white, 0 -0.1em white;
+  /* text-shadow: 0.1em 0 white, 0 0.1em white, -0.1em 0 white, 0 -0.1em white; */
+}
+
+.inside_animal{
+  width: 180;
+  display: inline-block;
+}
+
+.skyblue{
+  background-color: rgb(144, 236, 248);
+}
+
+.bordered{
+  border-style: solid;
+  border-color: black;
+  border-width: 3px;
+  border-radius: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.scroller{
+  overflow-y: scroll;
 }
 
 .modelbox {
+  background-color: rgb(144, 236, 248);
   vertical-align: top;
   display: block;
 
   padding: 10px;
   width: 800px;
-  height: 200px;
+
   border-style: solid;
   border-color: black;
   border-width: 3px;
   border-radius: 10px;
   margin-bottom: 10px;
+}
+
+.halfbox{
+  display: inline-block;
+  width: 350;
+  padding: 10px;
+  vertical-align: top;
+}
+
+.thumbox{
+  vertical-align: top;
+  margin-right: 5px;
+  margin-left: 5px;
+  display: inline-flex;
 }
 
 .savannah {

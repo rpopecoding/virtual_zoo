@@ -86,72 +86,59 @@ def contribute(request):
 def animal(request, render_id):
     animal = Animal.objects.get(id=render_id)
     biome = animal.biome.first()
+    all_biomes = animal.biome.all()
     comments = animal.comments.all()
     edits = animal.edits.all()
-    context = {
-        "animal": animal,
-        "biome": biome,
-        "comments": comments,
-        "edits": edits
-    }
-    if 'active_user' in request.session:
-        context['logged_in'] = True
-    else:
-        context['logged_in'] = False
-    print(context)
+    context = logcheck(request)
+    context["animal"] = animal
+    context["biome"] = biome
+    context["comments"] = comments
+    context["edits"] = edits
+    context['all_biomes'] = all_biomes
     return render(request, "animal.html", context)
 
 def family(request, render_id):
     family = Family.objects.get(id=render_id)
     comments = family.comments.all()
     edits = family.edits.all()
-    context = {
-        "family": family,
-        "all_animals": family.animals.all(),
-        "comments": comments,
-        "edits": edits
-    }
-    if 'active_user' in request.session:
-        context['logged_in'] = True
-    else:
-        context['logged_in'] = False
+    all_animals = family.animals.all()
+    context = logcheck(request)
+    context['family'] = family
+    context['all_animals'] = all_animals
+    context['comments'] = comments
+    context['edits'] = edits
+    
     return render(request, "family.html", context)
 
 def aniclass(request, render_id):
     aniclass = Aniclass.objects.get(id=render_id)
     comments = aniclass.comments.all()
     edits = aniclass.edits.all()
-    context = {
-        "aniclass": aniclass,
-        "all_animals": aniclass.animals.all(),
-        "comments": comments,
-        "edits": edits
-    }
-    if 'active_user' in request.session:
-        context['logged_in'] = True
-    else:
-        context['logged_in'] = False
+    all_animals = aniclass.animals.all()
+    context = logcheck(request)
+
+    context['aniclass'] = aniclass
+    context['all_animals'] = all_animals
+    context['comments'] = comments
+    context['edits'] = edits
+
     return render(request, "aniclass.html", context)
 
 def biome(request, render_id):
     biome = Biome.objects.get(id=render_id)
     comments = biome.comments.all()
     edits = biome.edits.all()
-    context = {
-        "biome": biome,
-        "all_animals": biome.animals.all(),
-        "comments": comments,
-        "edits": edits
-    }
-    if 'active_user' in request.session:
-        context['logged_in'] = True
-    else:
-        context['logged_in'] = False
+    context = logcheck(request)
+
+    context['biome'] = biome
+    context['all_animals'] = biome.animals.all()
+    context['comments'] = comments
+    context['edits'] = edits
     return render(request, "biome.html", context)
 
 def add_biome(request):
     
-    context ={}
+    context = logcheck(request)
     return render(request, "add_biome.html", context)
 
 def add_biome_exe(request):
@@ -163,13 +150,11 @@ def add_biome_exe(request):
         obj.save()
         editor = User.objects.get(id = request.session['active_user'])
         Edit.objects.create(editor=editor, bedit=obj, text="Created")
-    return redirect(f"/biomes/{obj.id}")
+        return redirect(f"/biomes/{obj.id}")
+    return redirect('/')
 
 def add_class(request):
-    lastmade = Aniclass.objects.last()
-    context ={}
-    if lastmade:
-        context['lastmade'] = lastmade
+    context = logcheck(request)
     return render(request, "add_class.html", context)
 
 def add_class_exe(request):
@@ -181,18 +166,14 @@ def add_class_exe(request):
         obj.save()
         editor = User.objects.get(id = request.session['active_user'])
         Edit.objects.create(editor=editor, cedit=obj, text="Created")
-        
-    return redirect(f"/aniclasses/{obj.id}")
+        return redirect(f"/aniclasses/{obj.id}")
+    return redirect("/")
 
 def add_family(request):
 
     all_classes = Aniclass.objects.all()
-    context ={
-        "all_classes": all_classes,
-    }
-    # lastmade = Family.objects.last()
-    # if lastmade:
-    #     context['lastmade'] = lastmade
+    context = logcheck(request)
+    context['all_classes'] = all_classes
     return render(request, "add_family.html", context)
 
 def add_family_exe(request):
@@ -205,7 +186,8 @@ def add_family_exe(request):
         obj.save()
         editor = User.objects.get(id = request.session['active_user'])
         Edit.objects.create(editor=editor, fedit=obj, text = "Created")
-    return redirect(f"/families/{obj.id}")
+        return redirect(f"/families/{obj.id}")
+    return redirect("/")
 
 def add_animal(request):
     lastmade = Animal.objects.last()
@@ -313,9 +295,8 @@ def comment(request):
 
 def edit_family(request, render_id):
     family = Family.objects.get(id=render_id)
-    context={
-        "family": family,
-    }
+    context = logcheck(request)
+    context['family']= family
     return render(request, "edit_family.html", context)
 
 def edit_family_exe(request):
@@ -342,9 +323,8 @@ def edit_family_exe(request):
 
 def edit_aniclass(request, render_id):
     aniclass = Aniclass.objects.get(id=render_id)
-    context={
-        "aniclass": aniclass,
-    }
+    context = logcheck(request)
+    context["aniclass"] = aniclass
     return render(request, "edit_aniclass.html", context)
 
 def edit_aniclass_exe(request):
@@ -367,9 +347,8 @@ def edit_aniclass_exe(request):
 
 def edit_biome(request, render_id):
     biome = Biome.objects.get(id=render_id)
-    context={
-        "biome": biome,
-    }
+    context = logcheck(request)
+    context['biome']= biome 
     return render(request, "edit_biome.html", context)
 
 def edit_biome_exe(request):
@@ -398,11 +377,14 @@ def edit_animal(request, render_id):
     for biome in all_biomes:
         if biome not in existing_biomes:
             potential_biomes.append(biome)
-    context={
-        "animal": animal,
-        "potential_biomes": potential_biomes,
-        "existing_biomes": existing_biomes
-    }
+    
+    context = logcheck(request)
+    context['animal'] = animal
+    context['potential_biomes'] = potential_biomes
+    context['existing_biomes'] = existing_biomes
+    context['biome'] = existing_biomes.first()
+    
+
     return render(request, "edit_animal.html", context)
 
 def edit_animal_exe(request):

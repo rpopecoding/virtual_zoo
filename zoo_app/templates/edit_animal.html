@@ -6,105 +6,152 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Show Animal</title>
     {% load static %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
   </head>
   <body>
-    <div class="animalbox" style="background-image: url({{biome.img.url}})">
-      <h3>{{animal.name}}</h3>
-      <img class="face" src="{{animal.face_img.url}}" />
+  <div class="container">
+    {% include 'partials/nav.html'%}
 
-      <div class="animal_description">
-        <h4>Quick Description</h4>
-        <p>
-          <b>{{animal.desc}}</b>
-        </p>
+    <div class="row p-1">
+      <div class="col-12 col-lg-5 border border-dark rounded skyblue p-2" style="background-image: url({{biome.img.url}})">
+        <div class="row">
+          <div class="col-6">
+          <img class="face" src="{{animal.face_img.url}}" />
+          </div>
+  
+          <div class="col-5 skyblue border border-dark rounded p-2">
+          <h5>{{animal.name}}</h5>
+          <h5>Family: <a href="/families/{{animal.family.id}}">{{animal.family}}</a></h5>
+          <h5>Class: <a href="/aniclasses/{{animal.aniclass.id}}">{{animal.aniclass}}</a></h5>
+          <h5>Habitats: 
+            {% for biome in existing_biomes %}
+            <a href="/biomes/{{biome.id}}">{{biome.name}}</a>
+           
+            {% endfor %}
+            </h5>
+  
+          
+          </div>
+        </div>
+        <div class="row d-flex justify-content-around p-1">
+        <div class="col-11 border border-dark rounded skyblue p-2">
+          <p>
+            <b>{{animal.desc}}</b>
+          </p>
+        </div>
+        </div>
+        <img src="{{animal.wide_img.url}}" class="wideshot" />
       </div>
-      <img src="{{animal.wide_img.url}}" class="wideshot" />
-    </div>
-
-    <div class="animalbox">
-      <h1>Edit Text</h1>
-      <form action="/edit_animal_exe" method="POST">
+  
+      <div class="col-12 col-lg-6 border border-dark rounded skyblue p-2">
+          <h1>Edit Text</h1>
+          <form action="/edit_animal_exe" method="POST">
+            {% csrf_token %}
+            <p>
+              <label for="id_name">Animal Name:</label>
+              <input
+                type="text"
+                name="name"
+                required
+                id="id_name"
+                value="{{animal.name}}"
+              />
+            </p>
+            <p>Description:</p>
+            <textarea name="desc">{{animal.desc}}</textarea>
+            <input
+              type="hidden"
+              id="animal_id"
+              name="animal_id"
+              value="{{animal.id}}"
+            />
+            <input type="submit" value="Submit" />
+          </form>
+          <form action="/edit_animal_exe" method="POST">
+            {% csrf_token %}
+            
+              <label for="biome_id">Add Habitat:</label>
+              <select name="biome" id="biome_id">
+                {% for biome in potential_biomes %}
+                <option value="{{biome.id}}">{{biome.name}}</option>
+                {% endfor %}
+              </select>
+              <input
+                type="hidden"
+                id="animal_id"
+                name="animal_id"
+                value="{{animal.id}}"
+              />
+            
+            <input type="submit" value="Submit" />
+          </form>
+          <form action="/edit_animal_exe" method="POST">
+            {% csrf_token %}
+            
+              <label for="kill_biome_id">Remove Habitat:</label>
+              <select name="kill_biome" id="kill_biome_id">
+                {% for biome in existing_biomes %}
+                <option value="{{biome.id}}">{{biome.name}}</option>
+                {% endfor %}
+              </select>
+              <input
+                type="hidden"
+                id="animal_id"
+                name="animal_id"
+                value="{{animal.id}}"
+              />
+            
+            <input type="submit" value="Submit" />
+          </form>
+          <h1>Edit Face Image</h1>
+      <form
+        action="/edit_animal_exe"
+        enctype="multipart/form-data"
+        method="POST"
+      >
         {% csrf_token %}
         <p>
-          <label for="id_name">Animal Name:</label>
-          <input
-            type="text"
-            name="name"
-            required
-            id="id_name"
-            value="{{animal.name}}"
-          />
+          <input type="file" name="face_img" accept="image/*" required id="id_face_img" />
+          <input type="submit" value="Submit" />
         </p>
-        <p>Description:</p>
-        <textarea name="desc">{{animal.desc}}</textarea>
         <input
           type="hidden"
           id="animal_id"
           name="animal_id"
           value="{{animal.id}}"
         />
-        <input type="submit" value="Submit" />
       </form>
-      <form action="/edit_animal_exe" method="POST">
-        {% csrf_token %}
-        <p>
-          <label for="biome_id">Add Habitat:</label>
-          <select name="biome" id="biome_id">
-            {% for biome in potential_biomes %}
-            <option value="{{biome.id}}">{{biome.name}}</option>
-            {% endfor %}
-          </select>
-          <input
-            type="hidden"
-            id="animal_id"
-            name="animal_id"
-            value="{{animal.id}}"
-          />
-        </p>
-        <input type="submit" value="Submit" />
-      </form>
-      <form action="/edit_animal_exe" method="POST">
-        {% csrf_token %}
-        <p>
-          <label for="kill_biome_id">Remove Habitat:</label>
-          <select name="kill_biome" id="kill_biome_id">
-            {% for biome in existing_biomes %}
-            <option value="{{biome.id}}">{{biome.name}}</option>
-            {% endfor %}
-          </select>
-          <input
-            type="hidden"
-            id="animal_id"
-            name="animal_id"
-            value="{{animal.id}}"
-          />
-        </p>
-        <input type="submit" value="Submit" />
-      </form>
-    </div>
-
-    <div class="animalbox">
-      <h1>Edit Image</h1>
+      <h1>Edit Wide Image</h1>
       <form
-        action="/edit_biome_exe"
+        action="/edit_animal_exe"
         enctype="multipart/form-data"
         method="POST"
       >
         {% csrf_token %}
         <p>
-          <input type="file" name="img" accept="image/*" required id="id_img" />
+          <input type="file" name="wide_img" accept="image/*" required id="wide_id_img" />
           <input type="submit" value="Submit" />
         </p>
         <input
           type="hidden"
-          id="biome_id"
-          name="biome_id"
-          value="{{biome.id}}"
+          id="animal_id"
+          name="animal_id"
+          value="{{animal.id}}"
         />
       </form>
+        
+      </div>
+  
     </div>
+    
 
-    <a href="/">Back</a>
+
+    
+
+  </div>
   </body>
 </html>
