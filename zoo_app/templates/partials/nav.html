@@ -1,12 +1,19 @@
-<div>
+<div class="row d-flex justify-content-around">
+  <div class="col-12 border border-dark rounded skyblue p-2">
   {% if logged_in == True %}
-  <h3>
-    Welcome <i>{{user.handle}}</i>
+  <h3>Welcome <i>{{user.handle}}</i>
     <a href="/users/{{user.id}}"> Profile</a>
     <a href="/logout">Logout</a>
     <a href="/">Home</a>
     <a href="/contribute">Contribute</a>
   </h3>
+
+    
+    
+    
+    
+    
+  
 
   {% else %}
   <h3>
@@ -16,4 +23,5 @@
     <a href="/">Home</a>
   </h3>
   {% endif %}
+  </div>
 </div>

@@ -5,41 +5,90 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {% load static %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
+    
+    
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-    <title>Document</title>
+
+    <title>Open Source Virtual Zoo</title>
   </head>
   <body>
-    {% include 'partials/nav.html'%}
 
-    <div class="modelbox">
+    <div class="container">
+    {% include 'partials/nav.html'%}
+    <div class="row">
+      <div class="col-12">
+        <h1><i>The Wondrous Open Source Zoo</i></h1>
+      </div> 
+    </div>
+
+    <div class="row">
+      <div class="col-12 mb-1 skyblue border border-dark rounded">
+      <h2>See the animals</h2>
+      
+      <div class="thumbox">
       {% for animal in all_animals %}
       <a href="animals/{{animal.id}}">
+        <p>{{animal.name}}</p>
         <img class="thumb" src="{{animal.face_img.url}}"
       /></a>
       {% endfor %}
+      </div>
     </div>
-    <div class="modelbox">
-      {% for family in all_families %}
-      <a href="families/{{family.id}}">
-        <img class="thumb" src="{{family.img.url}}"
-      /></a>
-      {% endfor %}
     </div>
 
-    <div class="modelbox">
-      {% for aniclass in all_classes %}
-      <a href="aniclasses/{{aniclass.id}}">
-        <img class="thumb" src="{{aniclass.img.url}}"
-      /></a>
-      {% endfor %}
+    <div class="row d-flex justify-content-around">
+
+      <div class="col-12 col-lg-6 skyblue border border-dark rounded mb-1">
+        <h3>Animal Families</h3>
+        {% for family in all_families %}
+        <div class="thumbox">
+        <a href="families/{{family.id}}">
+          <p>{{family.name}}</p>
+          <img class="thumb" src="{{family.img.url}}"/></a>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="col-12 col-lg-6 skyblue border border-dark rounded mb-1">
+        <h3>Animal Classes</h3>
+        {% for aniclass in all_classes %}
+        <div class="thumbox">
+        <a href="aniclasses/{{aniclass.id}}">
+          <p>{{aniclass.name}}</p>
+          <img class="thumb" src="{{aniclass.img.url}}"
+        /></a>
+        </div>
+        {% endfor %}
+      </div>
+
+
     </div>
 
-    <div class="modelbox">
+    
+
+
+    
+
+
+
+    <div class="row">
+      <div class="col-12 border border-dark rounded skyblue p-2">
+      <h3>See Habitats</h3>
       {% for biome in all_biomes %}
-      <a href="biomes/{{biome.id}}">
+      <div class="thumbox">
+        <a href="biomes/{{biome.id}}">
+        <p>{{biome.name}}</p>
         <img class="thumb" src="{{biome.img.url}}"
       /></a>
+     </div>
       {% endfor %}
+      </div>
+    </div>
+
     </div>
   </body>
 </html>

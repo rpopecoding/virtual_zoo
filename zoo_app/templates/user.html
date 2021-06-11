@@ -5,21 +5,31 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {% load static %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
     <title>{{render_user.handle}}'s Profile</title>
   </head>
   <body>
-    
+    <div class="container">
     {% include 'partials/nav.html'%}
     
+    <div class="row p-1">
+      <div class="col-12 col-lg-4 mb-1 skyblue border border-dark rounded">
     {% if match == True %}
-    <h1>Your Name: {{render_user.first_name}} {{render_user.last_name}}</h1>
-    <h1>Your Handle: {{render_user.handle}}</h1>
-    <h1>Your Email: {{render_user.email}}</h1>
-    <h1><a href="/edit_user">Edit Profile</a></h1>
+    <h5>Name: {{render_user.first_name}} {{render_user.last_name}}</h5>
+    <h5>Handle: {{render_user.handle}}</h5>
+    <h5>Email: {{render_user.email}}</h5>
+    <h5><a href="/edit_user">Edit Profile</a></h5>
     {% else %}
-    <h1>{{render_user.handle}}'s Profile</h1>
+    <h3>{{render_user.handle}}'s Profile</h3>
     {% endif %}
+        </div>
+
+      <div class="col-12 col-lg-4 mb-1 skyblue border border-dark rounded">
     <h3>Comments</h3>
     {% for comment in render_user_comments %}
     
@@ -36,7 +46,9 @@
     <p><a href="/biomes/{{comment.bcomment.id}}">{{comment.bcomment.name}}</a>: "{{comment.text}}" @ {{comment.created_at}}</p>
     {% endif %}
     {% endfor %}
+    </div>
 
+    <div class="col-12 col-lg-4 mb-1 skyblue border border-dark rounded">
     <h3>Edits</h3>
     {% for edit in render_user_edits %}
     
@@ -53,7 +65,9 @@
     <p><a href="/biomes/{{edit.bedit.id}}">{{edit.bedit.name}}</a>: "{{edit.text}}" @ {{edit.created_at}}</p>
     {% endif %}
     {% endfor %}
+    </div>
 
-
+    </div>
+    </div>
   </body>
 </html>

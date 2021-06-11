@@ -6,26 +6,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Show Animal</title>
     {% load static %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
   </head>
   <body>
-    <div class="animalbox" style="background-image: url({{biome.img.url}})">
-      <h3>{{animal.name}}</h3>
-      <img class="face" src="{{animal.face_img.url}}" />
+    <div class="container">
+    {% include 'partials/nav.html'%}
+    <div class="row p-1">
+    <div class="col-12 col-lg-5 border border-dark rounded skyblue p-2" style="background-image: url({{biome.img.url}})">
+      <div class="row">
+        <div class="col-6">
+        <img class="face" src="{{animal.face_img.url}}" />
+        </div>
 
-      <div class="animal_description">
-        <h4>Quick Description</h4>
+        <div class="col-5 skyblue border border-dark rounded p-2">
+        <h5>{{animal.name}}</h5>
+        <h5>Family: <a href="/families/{{animal.family.id}}">{{animal.family}}</a></h5>
+        <h5>Class: <a href="/aniclasses/{{animal.aniclass.id}}">{{animal.aniclass}}</a></h5>
+        <h5>Habitats: 
+          {% for biome in all_biomes %}
+          <a href="/biomes/{{biome.id}}">{{biome.name}}</a>
+         
+          {% endfor %}
+          </h5>
+
+        
+        </div>
+      </div>
+      <div class="row d-flex justify-content-around p-1">
+      <div class="col-11 border border-dark rounded skyblue p-2">
         <p>
           <b>{{animal.desc}}</b>
         </p>
       </div>
+      </div>
       <img src="{{animal.wide_img.url}}" class="wideshot" />
     </div>
 
-    <div class="animalbox">
+    <div class="col-12 col-lg-6 border border-dark rounded skyblue p-2">
       <h1>Comments</h1>
       {% for comment in comments %}
-      <p>{{comment.text}} <i>-{{comment.commentor.first_name}}</i></p>
+      <p>{{comment.text}} <i><a href="/users/{{comment.commentor.id}}">-{{comment.commentor.handle}}</i></a></p>
       {% endfor %} {% if logged_in == True %}
       <form action="/comment" method="POST">
         {% csrf_token %}
@@ -42,17 +67,22 @@
       {% endif %}
     </div>
 
-    <div class="animalbox">
+    </div>
+
+
+    <div class="row">
+      <div class="col-12 border border-dark rounded skyblue p-2">
       <h1>Edits</h1>
       {% for edit in edits %}
-      <p>{{edit.text}} <i>-{{edit.editor.first_name}}</i></p>
+      <p>{{edit.text}} <a href="/users/{{edit.editor.id}}"><i>-{{edit.editor.handle}}</a></i></p>
       {% endfor %}{% if logged_in == True %}
       <a href="/animals/{{animal.id}}/edit">Make Edit</a>
       {% else %}
       <p>Login to edit</p>
       {% endif %}
+      </div>
     </div>
-
-    <a href="/">Back</a>
+</div>
+    
   </body>
 </html>

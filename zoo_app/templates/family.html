@@ -6,26 +6,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Show Animal Family</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="{% static 'css/style.css' %}" />
   </head>
   <body>
-    <div class="animalbox">
+    <div class="container">
+    {% include 'partials/nav.html'%}
+
+    <div class="row p-1">
+    <div class="col-12 col-lg-5 border border-dark rounded skyblue p-2">
       <h3>{{family.name}}</h3>
       <img class="face" src="{{family.img.url}}" />
 
       <div class="animal_description">
-        <h4>Quick Description</h4>
-        <p>
+          <p>
           <b>{{family.desc}}</b>
         </p>
       </div>
     </div>
-    <div class="animalbox">
+    <div class="col-12 col-lg-5 border border-dark rounded skyblue p-2">
       <h1>Comments</h1>
       {% for comment in comments %}
       <p>
         {{comment.text}}
-        <i>-{{comment.commentor.first_name}} @ {{comment.created_at}}</i>
+        <a href="/users/{{comment.commentor.id}}"><i>-{{comment.commentor.handle}}</a> @ {{comment.created_at}}</i>
       </p>
       {% endfor %} {% if logged_in == True %}
       <form action="/comment" method="POST">
@@ -42,26 +50,37 @@
       <p>Login to make comment</p>
       {% endif %}
     </div>
+    </div>
 
-    <div class="animalbox">
+    <div class="row p-1">
+
+      <div class="col-12 col-lg-5 border border-dark rounded skyblue p-2">
+        <h2>Animals in this Category</h2>
+        
+        {% for animal in all_animals %}
+        <div class="thumbox">
+        <a href="/animals/{{animal.id}}"><p>{{animal.name}}</p>
+        <img class="thumb" src="{{animal.face_img.url}}"/></a>
+        </div>
+        {% endfor %}
+      </div>
+      
+        
+      <div class="col-12 col-lg-5 border border-dark rounded skyblue p-2">
       <h1>Edits</h1>
       {% for edit in edits %}
       <p>
-        {{edit.text}} <i>-{{edit.editor.first_name}} @ {{edit.created_at}}</i>
+        {{edit.text}} <a href="/users/{{edit.editor.id}}"><i>-{{edit.editor.handle}}</a> @ {{edit.created_at}}</i>
       </p>
       {% endfor %}{% if logged_in == True %}
       <a href="/families/{{family.id}}/edit">Make Edit</a>
       {% else %}
       <p>Login to edit</p>
       {% endif %}
+      </div>
     </div>
-    <div class="modelbox">
-      {% for animal in all_animals %}
-      <a href="/animals/{{animal.id}}">
-        <img class="thumb" src="{{animal.face_img.url}}"
-      /></a>
-      {% endfor %}
+    
     </div>
-    <a href="/index">Back</a>
+    
   </body>
 </html>
